@@ -1,0 +1,16 @@
+MODE : 1
+
+p0 --> input1_0
+p1 --> input2_0
+p2 --> input1_1
+p3 --> input2_1
+
+sum_0 = input1_0^input2_0
+carry_0 = input1_0 & input2_0
+
+sum_1 = input1_1^input2_1^carry_0
+carry_1 = (input1_1 & input2_1)|(input2_1 & carry_0)|(carry_0 & input1_1)
+ 
+sum_0 --> p23
+sum_1 --> p22
+carry_1 --> p21

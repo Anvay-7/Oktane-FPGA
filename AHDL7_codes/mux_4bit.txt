@@ -1,0 +1,19 @@
+MODE:1
+
+p0 --> i0
+p1 --> i1
+p2 --> i2
+p3 --> i3
+
+p6 --> s1
+p7 --> s0
+
+term1 = ((~s1) & (~s0) & i0)
+term2 = ((~s1) & (s0) & i1)
+term3 = ((s1) & (~s0) & i2)
+term4 = ((s1) & (s0) & i3)
+
+term5 = term1 | term2 | term3
+term6 = term5 | term4
+
+term6 --> p17
