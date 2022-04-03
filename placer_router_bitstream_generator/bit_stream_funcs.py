@@ -299,12 +299,10 @@ def bit_stream_config_gen(codes:list,exprs:list,mode:int,clb_list:list[Clb],cbox
     clb_conn_box_pattern="[Y|y](?P<clb_number>\d)(?P<output_no>\d) *--> *[vVhH]\d\d(?P<layer_no>\d)"
     switch_box_pattern='(?P<pos1>[H|h|V|v])(?P<row1>\d)(?P<col1>\d)(?P<layer1>\d) *--> *(?P<pos2>[H|h|V|v])(?P<row2>\d)(?P<col2>\d)(?P<layer2>\d)'
     clb_pattern=['[Yy](?P<clb_no>\d)(?P<y_no>\d)\s*', #LHS
-        '(?P<ff_edge>!?)(?P<async_sync><?)(?P<clk_var>\w*)=', #sync or async
-        '(?P<expression>[\(\s\)]*(?P<not1>~?)[\(\s\)]*(?P<var1>[ABCabc])(?P<var1_no>\d?)',
-        '[\(\s\)]*(?P<op12>[-^&|]?)[\(\s\)]*((?P<not2>~?)[\(|\s|\)]*(?P<var2>[ABCabc])(?P<var2_no>\d?))?',
-        '[\(\s\)]*(?P<op23>[-^&|]?)[\(\s\)]*((?P<not3>~?)[\(|\s|\)]*(?P<var3>[ABCabc])(?P<var3_no>\d?))?)']
+        '(?P<ff_edge>!?)(?P<async_sync><?)(?P<clk_var>\w*)=' #sync or async
+        ] 
     clb_pattern=''.join(clb_pattern)
-
+    
     for code in codes:
         io_conn_box_result=re.search(io_conn_box_pattern,code)
         clb_conn_box_result=re.search(clb_conn_box_pattern,code)

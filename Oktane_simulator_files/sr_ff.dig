@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<circuit>
+  <version>1</version>
+  <attributes/>
+  <visualElements>
+    <visualElement>
+      <elementName>fpga_ckt.dig</elementName>
+      <elementAttributes/>
+      <pos x="620" y="360"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Out</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>Qb</string>
+        </entry>
+      </elementAttributes>
+      <pos x="960" y="600"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Out</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>Q</string>
+        </entry>
+      </elementAttributes>
+      <pos x="960" y="560"/>
+    </visualElement>
+    <visualElement>
+      <elementName>In</elementName>
+      <elementAttributes>
+        <entry>
+          <string>rotation</string>
+          <rotation rotation="3"/>
+        </entry>
+        <entry>
+          <string>Label</string>
+          <string>S</string>
+        </entry>
+      </elementAttributes>
+      <pos x="660" y="320"/>
+    </visualElement>
+    <visualElement>
+      <elementName>In</elementName>
+      <elementAttributes>
+        <entry>
+          <string>rotation</string>
+          <rotation rotation="3"/>
+        </entry>
+        <entry>
+          <string>Label</string>
+          <string>clk</string>
+        </entry>
+      </elementAttributes>
+      <pos x="740" y="320"/>
+    </visualElement>
+    <visualElement>
+      <elementName>In</elementName>
+      <elementAttributes>
+        <entry>
+          <string>rotation</string>
+          <rotation rotation="3"/>
+        </entry>
+        <entry>
+          <string>Label</string>
+          <string>R</string>
+        </entry>
+      </elementAttributes>
+      <pos x="820" y="320"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Clock</elementName>
+      <elementAttributes/>
+      <pos x="440" y="460"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Tunnel</elementName>
+      <elementAttributes>
+        <entry>
+          <string>NetName</string>
+          <string>clk</string>
+        </entry>
+      </elementAttributes>
+      <pos x="460" y="460"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Tunnel</elementName>
+      <elementAttributes>
+        <entry>
+          <string>NetName</string>
+          <string>clk</string>
+        </entry>
+      </elementAttributes>
+      <pos x="760" y="520"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Text</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Description</string>
+          <string>Set the FF or reset the FF before loading the bitstream to avoid the indeterminate state.</string>
+        </entry>
+      </elementAttributes>
+      <pos x="260" y="160"/>
+    </visualElement>
+  </visualElements>
+  <wires>
+    <wire>
+      <p1 x="900" y="560"/>
+      <p2 x="960" y="560"/>
+    </wire>
+    <wire>
+      <p1 x="900" y="600"/>
+      <p2 x="960" y="600"/>
+    </wire>
+    <wire>
+      <p1 x="440" y="460"/>
+      <p2 x="460" y="460"/>
+    </wire>
+    <wire>
+      <p1 x="820" y="320"/>
+      <p2 x="820" y="360"/>
+    </wire>
+    <wire>
+      <p1 x="740" y="320"/>
+      <p2 x="740" y="360"/>
+    </wire>
+    <wire>
+      <p1 x="660" y="320"/>
+      <p2 x="660" y="360"/>
+    </wire>
+    <wire>
+      <p1 x="760" y="500"/>
+      <p2 x="760" y="520"/>
+    </wire>
+  </wires>
+  <measurementOrdering/>
+</circuit>

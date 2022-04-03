@@ -1,0 +1,14 @@
+MODE:1
+
+p23 --> s
+p21 --> cp
+p19 --> r
+
+nand1 = ~(s & cp)
+nand2 = ~(r & cp)
+
+q = ~(nand1 & qb)
+qb = ~(nand2 & q)
+
+q --> p13
+qb --> p12

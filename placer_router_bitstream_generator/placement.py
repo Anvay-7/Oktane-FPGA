@@ -77,9 +77,9 @@ def add_clb_no(expr:str,expressions:dict,state:tuple,new_code_lines:list,copy_ro
             #If var1 --> var2 and a0 --> var1 then modify the code to a0 -->var2. This is done by storing the ports of variables in io_port_conn             
             if val in io_port_conn.keys():
                 if key=='y':
-                    new_code_lines.append(f"{key}{clb_no}{y_no}-->{io_port_conn[val]}")
+                    new_code_lines.append(f"{key}{clb_no}{y_no} --> {io_port_conn[val]}")
                 else:
-                    new_code_lines.append(f"{io_port_conn[val]}-->{key}{clb_no}")
+                    new_code_lines.append(f"{io_port_conn[val]} --> {key}{clb_no}")
                 
             #Replace the variable with the port in the expression and the routing codes      
             for i,route_code in enumerate(copy_routing_codes):
@@ -90,16 +90,20 @@ def add_clb_no(expr:str,expressions:dict,state:tuple,new_code_lines:list,copy_ro
                 if key=='y':
                     #Done so that only the output gets replaced (eg. q0 <= q0 to y01 <= q0)
                     if re.search(fr"\b{val}\b *!?<?=",expr):
-                        expr=expr.replace(val,f"{key}{clb_no}{y_no}",1) # Only one replacement
+                        expr=re.sub(fr"\b{val}\b",f"{key}{clb_no}{y_no}",expr,count=1)
+                        #expr=expr.replace(val,f"{key}{clb_no}{y_no}",1) # Only one replacement
                         
                     if res_pin and res_input:
                         io_port_conn[val]=f"{key}{clb_no}{y_no}"
-                    copy_routing_codes[i]=copy_routing_codes[i].replace(val,key+str(clb_no)+str(y_no))
+                    copy_routing_codes[i]=re.sub(fr"\b{val}\b",key+str(clb_no)+str(y_no),copy_routing_codes[i])
+                    #copy_routing_codes[i]=copy_routing_codes[i].replace(val,key+str(clb_no)+str(y_no))
                 elif key in ['a','b','c']:
-                    expr=expr.replace(val,key)
+                    expr=re.sub(fr"\b{val}\b",key,expr)
+                    #expr=expr.replace(val,key)
                     if res_pin and res_input:
                         io_port_conn[val]=res_pin.group('port')
-                    copy_routing_codes[i]=copy_routing_codes[i].replace(val,key+str(clb_no))
+                    copy_routing_codes[i]=re.sub(fr"\b{val}\b",key+str(clb_no),copy_routing_codes[i])
+                    #copy_routing_codes[i]=copy_routing_codes[i].replace(val,key+str(clb_no))
                     
                     #Since routing graph is directed graph, path from [a,b,c] to something else isn't possible. So reverse the connection.
                     input_port_pattern='(?P<input>([abc]|(clk))\d) *--> *(?P<port>p\d{1,2})'
@@ -123,7 +127,8 @@ def add_clb_no(expr:str,expressions:dict,state:tuple,new_code_lines:list,copy_ro
                         if clk_dict.get(expressions[expr][3]):
                             #Add the port number in the expression 
                             expr=split_res.group('g1')+clk_dict[expressions[expr][3]]+split_res.group('g2')
-                    copy_routing_codes[i]=copy_routing_codes[i].replace(val,'clk'+str(clb_no))
+                    copy_routing_codes[i]=re.sub(fr"\b{val}\b",'clk'+str(clb_no),copy_routing_codes[i])
+                    #copy_routing_codes[i]=copy_routing_codes[i].replace(val,'clk'+str(clb_no))
             
             #Add the variable which is connected only internally and not to any of the external io ports
             if val not in io_port_conn.keys():
@@ -378,7 +383,9 @@ def placer(route_nw:nx.DiGraph,clb_nw:nx.Graph,code_lines:list)->Tuple[list,int,
     while (stop_condition(cost_list)):
     #while(i<100):
         i+=1
-
+        
+        print("Iteration -- ", i)
+        
         if curr_cost_path[0]:
             cost_list.append(curr_cost_path[0])
             print(i,colored(curr_cost_path[0],'magenta'))

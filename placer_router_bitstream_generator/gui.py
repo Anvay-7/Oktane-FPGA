@@ -109,7 +109,7 @@ class Ide(QMainWindow):
         abt.setTextFormat(Qt.RichText)
         abt.setIconPixmap(QPixmap(r"D:\Oktane\placer_router_bitstream_generator\icons\dp.png"))
         abt.setWindowTitle("About")
-        abt.setText("<br>Made by Skadoosh!<br>"+"<a href= 'https://github.com/Anvay-7'><center>Github</center><br/></a>")
+        abt.setText("<br>Made by Anvay!<br>"+"<a href= 'https://github.com/Anvay-7'><center>Github</center><br/></a>")
         abt.setFont(self.font)
         abt.exec_()
 
@@ -318,7 +318,6 @@ class MyHighlighter( QSyntaxHighlighter ):
         brackets = QTextCharFormat()
         expr_assignment_operator = QTextCharFormat()
         number = QTextCharFormat()
-        comment = QTextCharFormat()
         sync_async_operator = QTextCharFormat()
         ff_edge = QTextCharFormat()
         expr_inputs_1=QTextCharFormat()
@@ -327,6 +326,7 @@ class MyHighlighter( QSyntaxHighlighter ):
         port_inputs_l=QTextCharFormat()
         port_inputs_r=QTextCharFormat()
         ports = QTextCharFormat()
+        comment = QTextCharFormat()
         
         self.highlightingRules = []
 
@@ -380,12 +380,6 @@ class MyHighlighter( QSyntaxHighlighter ):
         rule = HighlightingRule( pattern, number )
         self.highlightingRules.append( rule )
         
-        # comment
-        brush = QBrush( Qt.lightGray, Qt.SolidPattern )
-        pattern = r"(#[^\n]*)" 
-        comment.setForeground( brush )
-        rule = HighlightingRule( pattern, comment )
-        self.highlightingRules.append( rule )
         
         # sync_async_operator
         brush = QBrush( Qt.darkYellow, Qt.SolidPattern )
@@ -451,6 +445,13 @@ class MyHighlighter( QSyntaxHighlighter ):
         ports.setForeground( brush )
         ports.setFontWeight( QFont.Bold )
         rule = HighlightingRule( pattern, ports )
+        self.highlightingRules.append( rule )
+        
+        # comment
+        brush = QBrush( Qt.lightGray, Qt.SolidPattern )
+        pattern = r"(#[^\n]*)" 
+        comment.setForeground( brush )
+        rule = HighlightingRule( pattern, comment )
         self.highlightingRules.append( rule )
 
     def highlightBlock( self, text ):
