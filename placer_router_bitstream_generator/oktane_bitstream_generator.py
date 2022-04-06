@@ -1,4 +1,3 @@
-import imp
 import random
 import code_read as cdr
 import graph_nw as gnw
@@ -6,6 +5,7 @@ import placement as pl
 import bit_stream_funcs as bsf
 import config as cfg
 import colorama
+from termcolor import colored
 from gui import exec_prgs
 
 def main(exec_progress:exec_prgs,AHDL7_file_dir:str)->None:
@@ -62,9 +62,7 @@ def main(exec_progress:exec_prgs,AHDL7_file_dir:str)->None:
     
     if mode == 1:
         final_codelines, paths, conv_exprs = pl.placer(routing_nw, clb_nw, code_lines)
-        print(final_codelines)
-        print(conv_exprs)
-        
+        print(colored(final_codelines,'cyan'))        
         codes = gnw.detailed_code_gen(paths, clbs)
 
         bsf.bit_stream_config_gen(codes, conv_exprs, mode, clbs, cbox_data, sbox_data)

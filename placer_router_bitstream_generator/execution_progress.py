@@ -37,7 +37,6 @@ class pg_bar(QObject):
     def __init__(self,pbar):
         super(pg_bar, self).__init__(pbar)
         self.pbar=pbar
-        #self.txt_csr=txt_csr
         
     def signal_accept(self, msg):
         self.pbar.setValue(int(msg))
@@ -83,15 +82,7 @@ class Example(QWidget):
         self.pg_bar_thd.start()
         
         self.show()
-                
-        # filepath="D:\Documents\digital projects\FPGA slice\\fpga_ckt.dig"
-        # if platform.system() == 'Darwin':       # macOS
-        #     subprocess.call(('open', filepath))
-        # elif platform.system() == 'Windows':    # Windows
-        #     os.startfile(filepath)
-        # else:                                   # linux variants
-        #     subprocess.call(('xdg-open', filepath))
-        
+                        
 def main():
     app = QApplication(sys.argv)
     app.setStyleSheet(StyleSheet)

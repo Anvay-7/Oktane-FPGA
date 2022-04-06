@@ -5,7 +5,6 @@ from typing import Tuple
 from bit_stream_funcs import Clb
 import config as cfg
 
-
 def reverse_link(link: tuple) -> tuple:
     """
     Reverses the first and second element of the tuple.
@@ -147,7 +146,7 @@ def route_nw_gen() -> nx.DiGraph:
         for j in range(1, cfg.OUT_CNT + 1):
             for k in range(cfg.ROUTE_CHNL_SIZE):
                 graph_conns["port_y"].append((f"y{i}{j}", f"v{i//3}{i%3+1}{k}", 1))
-
+                
     # # 8888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
     # for i in range(r * c):
     #     for j in range(1, cfg.OUT_CNT):
@@ -158,6 +157,7 @@ def route_nw_gen() -> nx.DiGraph:
     # add all the graph connections to the graph object created at the start
     for graph_conn in graph_conns.keys():
         G.add_weighted_edges_from(graph_conns[graph_conn])
+
 
     return G
 
@@ -395,4 +395,3 @@ def detailed_code_gen(paths:list[list], clb_list:list[Clb])->list:
             else:
                 codes.append(code)
     return codes
-

@@ -301,7 +301,7 @@ def clb_nw_gen()->nx.Graph:
     Generate a undirected graph based on the CLB network.
 
     Returns:
-        nx.Graph: The CLB network graph
+        nx.Graph: The CLB network graph.
     """
     clb_links=[(0,1),(1,2),(3,4),(4,5),(6,7),(7,8),(0,3),(3,6),(1,4),(4,7),(2,5),(5,8)]
     clb_conn_graph=nx.Graph()
@@ -310,7 +310,7 @@ def clb_nw_gen()->nx.Graph:
 
 def placer(route_nw:nx.DiGraph,clb_nw:nx.Graph,code_lines:list)->Tuple[list,int,list]:
     """
-    _summary_
+    Assigns CLB's to various expressions and generates corresponding generalsied code.
 
     Args:
         route_nw (nx.DiGraph): The routing network graph
@@ -371,7 +371,6 @@ def placer(route_nw:nx.DiGraph,clb_nw:nx.Graph,code_lines:list)->Tuple[list,int,
     
     print(colored(initial_state,"blue"))
     print(colored(' CURRENT STATE ','yellow','on_blue',['bold']),colored(curr_state,'yellow'))
-    print(colored(' CODE LINES ','green','on_red',['bold']),colored(curr_state_code_lines,'green'))
     
     curr_cost_path=get_paths_cost(route_nw,curr_state_code_lines)
     print(curr_cost_path[1])
@@ -383,12 +382,12 @@ def placer(route_nw:nx.DiGraph,clb_nw:nx.Graph,code_lines:list)->Tuple[list,int,
     while (stop_condition(cost_list)):
     #while(i<100):
         i+=1
-        
+        print(colored("*-*-*-*-*-*-*-*",'yellow'))
         print("Iteration -- ", i)
         
         if curr_cost_path[0]:
             cost_list.append(curr_cost_path[0])
-            print(i,colored(curr_cost_path[0],'magenta'))
+            print("Cost = ",colored(curr_cost_path[0],'magenta'))
         #print(colored(' COST ','magenta','on_white'),colored(curr_cost,'magenta'))
 
         new_states=next_state(clb_nw,curr_state,expressions,expr_inputs)
@@ -423,7 +422,7 @@ def placer(route_nw:nx.DiGraph,clb_nw:nx.Graph,code_lines:list)->Tuple[list,int,
         else:
             threshold=random.uniform(0,1)
             probability=math.exp(-(delta/temperature))
-            print('           '+colored(probability,'green'))
+            print(colored('Curr_accepatance: ','blue')+colored(probability,'green'))
             
             #Accept the bad move  
             if threshold<probability:
@@ -454,6 +453,7 @@ def placer(route_nw:nx.DiGraph,clb_nw:nx.Graph,code_lines:list)->Tuple[list,int,
     # t0=(delta_mean+3*statistics.stdev(delta_list))/math.log(1/0.95)
     # print("t0========",t0)
     #print(' DELTA LIST ',cost_list)
+    print(colored(expressions,'magenta'))
     k_counter={}
     cost_set=set(cost_list)
     for cost in cost_set:

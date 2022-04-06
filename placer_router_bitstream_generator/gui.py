@@ -129,34 +129,22 @@ class Ide(QMainWindow):
         
     def run(self):     
         self.prgs_thd = QThread()
-        # Step 3: Create a code_exec object
         self.exec_prgs = exec_prgs()
-        # Step 4: Move exec_prgs to the thread
         self.exec_prgs.moveToThread(self.prgs_thd)
-        # Step 5: Connect signals and slots
         self.prgs_thd.started.connect(self.exec_prgs.show_prog)
         self.exec_prgs.prog_exec_finished.connect(self.prgs_thd.quit)
         self.exec_prgs.prog_exec_finished.connect(self.exec_prgs.deleteLater)
         self.prgs_thd.finished.connect(self.prgs_thd.deleteLater)
-        #self.exec_prgs.progress.connect(self.reportProgress)
-        # Step 6: Start the thread
         self.prgs_thd.start()
         
-        
-        # Step 2: Create a QThread object
         self.code_run_thd = QThread()
-        # Step 3: Create a code_exec object
         self.code_exec = code_exec(self.exec_prgs,self.filename)
-        # Step 4: Move code_exec to the thread
         self.code_exec.moveToThread(self.code_run_thd)
-        # Step 5: Connect signals and slots
         self.code_run_thd.started.connect(self.code_exec.run_code)
-        #self.code_exec.code_exec_finished.connect(self.stop_code_exec)
         self.code_exec.code_exec_finished.connect(self.code_run_thd.quit)
         self.code_exec.code_exec_finished.connect(self.code_exec.deleteLater)
         self.code_run_thd.finished.connect(self.code_run_thd.deleteLater)
-        #self.code_exec.progress.connect(self.reportProgress)
-        # Step 6: Start the thread
+
         self.code_run_thd.start()  
 
     def initFormatbar(self):
@@ -233,7 +221,7 @@ class Ide(QMainWindow):
 
     def open(self):
         # Get filename and show only .writer files
-        self.filename,_ = QFileDialog.getOpenFileName(self, 'Open File',".","(*.txt)")
+        self.filename,_ = QFileDialog.getOpenFileName(self, 'Open File',"./AHDL7_codes","(*.ahdl)")
         if self.filename:
             with open(self.filename,"rt") as file:
                 self.text.setText(file.read())
@@ -243,8 +231,8 @@ class Ide(QMainWindow):
         if not self.filename:
             self.filename,_ = QFileDialog.getSaveFileName(self, 'Save File')
         # Append extension if not there yet
-        if not self.filename.endswith(".txt"):
-            self.filename += ".txt"
+        if not self.filename.endswith(".ahdl"):
+            self.filename += ".ahdl"
 
         # We just store the contents of the text file along with the
         # format in html, which Qt does in a very nice way for us
@@ -255,8 +243,8 @@ class Ide(QMainWindow):
         # Only open dialog if there is no filename yet
         filename,_ = QFileDialog.getSaveFileName(self, 'Save File')
         # Append extension if not there yet
-        if not filename.endswith(".txt"):
-            filename += ".txt"
+        if not filename.endswith(".ahdl"):
+            filename += ".ahdl"
 
         if not self.filename:
             self.filename=filename
@@ -374,7 +362,6 @@ class MyHighlighter( QSyntaxHighlighter ):
         # number
         brush = QBrush( Qt.darkGray, Qt.SolidPattern )  
         pattern = r"(\b[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?\b)" 
-        # pattern.setMinimal( True )
         number.setForeground( brush )
         number.setFontWeight( QFont.Bold )
         rule = HighlightingRule( pattern, number )
