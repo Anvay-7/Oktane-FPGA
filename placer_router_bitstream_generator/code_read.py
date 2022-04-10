@@ -1,10 +1,7 @@
 import os
-from tkinter.messagebox import NO
 import xml.etree.ElementTree as ET
 import re
 import config as cfg
-import math
-import bit_stream_funcs as bsf
 
 def AHDL7_read(directory: str) -> list:
     """
@@ -96,151 +93,57 @@ class WriteMem:
         """
         self.dir = directory
         self.sw_box_count = ((cfg.ROWS_CNT+1)*(cfg.COLS_CNT+1))//2 #Divide by 2 as two groups of sw_box's in one ROM
-        self.sw_box_cfg = ["" for _ in range(self.sw_box_count)]
         
         self.conn_box_count=(cfg.ROWS_CNT+cfg.COLS_CNT)*cfg.IO_GRP_SIZE*2+(cfg.CLB_CNT*2)
-        self.conn_box_cfg = ["" for _ in range(math.ceil(self.conn_box_count/16))]
-        
-        self.clb_data_cfg = ["" for _ in range(cfg.CLB_CNT)]
-
-    def make_dir(self)->None:
-        """
-        Creates the folders(if not created already) required to store the data.
-        """        
-        # Create all the necessary folders
-        if not os.path.isdir(os.path.join(self.dir, "config_data")):
-            os.mkdir(os.path.join(self.dir, "config_data"))
-
-        self.sw_cfg_data_folder_path = os.path.join(
-            self.dir, "config_data", "sw_cfg_data"
-        )
-        if not os.path.isdir(self.sw_cfg_data_folder_path):
-            os.mkdir(self.sw_cfg_data_folder_path)
-
-        self.conn_box_cfg_data_folder_path = os.path.join(
-            self.dir, "config_data", "conn_box_cfg_data"
-        )
-        if not os.path.isdir(self.conn_box_cfg_data_folder_path):
-            os.mkdir(self.conn_box_cfg_data_folder_path)
-
-        self.io_cfg_data_folder_path = os.path.join(
-            self.dir, "config_data", "io_cfg_data"
-        )
-        if not os.path.isdir(self.io_cfg_data_folder_path):
-            os.mkdir(self.io_cfg_data_folder_path)
-
-        self.clb_cfg_data_folder_path = os.path.join(
-            self.dir, "config_data", "clb_cfg_data"
-        )
-        if not os.path.isdir(self.clb_cfg_data_folder_path):
-            os.mkdir(self.clb_cfg_data_folder_path)
-
-    def switch_box(self, sbox_data:dict)->None:
-        """
-        Divide the switch box bitstreams into different ROM's
-        write bitstream for 8 switch boxes(2 groups) into a single ROM
-
-        Args:
-            sbox_data (dict): Bitstream for switch boxes. eg {'s0':'010010'}
-        """
-        rom_no = -1
-        for i in range(self.sw_box_count*2):
-            if i % 2 == 0:
-                rom_no += 1
-            for j in range(cfg.ROUTE_CHNL_SIZE):
-                self.sw_box_cfg[rom_no] = (
-                    self.sw_box_cfg[rom_no] + sbox_data["s" + str(i) + str(j)]
-                )
-
-        # Write the switch box bitstream to ROM
-        #Each ROM can hold 48 bits or 8 switch box's data
-        for i in range(self.sw_box_count):
-            self.sw_box_cfg[i] = "{:012x}".format(int(self.sw_box_cfg[i][::-1], 2))
-            final_code_str = "v2.0 raw\n" + self.sw_box_cfg[i]
     
-            file = open(
-                os.path.join(
-                    self.sw_cfg_data_folder_path, "sw_data_cfg_" + str(i) + ".hex"
-                ),
-                "w+",
-            )
-            link_ROM(
-                self.dir,
-                "sw-cfg" + str(i),
-                os.path.join(
-                    self.sw_cfg_data_folder_path, "sw_data_cfg_" + str(i) + ".hex"
-                ),
-            )
-            file.write(final_code_str)
-            file.close()
 
-    def conn_box(self, conn_box_config:dict,)->None:
-        """
-        Divide the connection box bitstreams into different ROM's
-        write bitstream for 16 connection boxes into a single ROM
-
-        Args:
-            conn_box_config (dict): Bitstream for connection boxes. eg {'c0':'0100'}
-        """
-        rom_no=-1
-        for i in range(self.conn_box_count):
+    # def make_dir(self)->None:
+    #     """
+    #     Creates the folders(if not created already) required to store the data.
+    #     """        
+    #     # Create all the necessary folders
+    #     if not os.path.isdir(os.path.join(self.dir, "config_data")):
+    #         os.mkdir(os.path.join(self.dir, "config_data"))
             
-            #Each ROM can hold 64 bits or 16 connection box's data    
-            if (i%16)==0:
-                rom_no+=1
+    def serial_bitstream(self,sbox_data,conn_box_config,clb_list):
+        order=[
+            's0','c23','c22','s1','c21','c20','s2','c19','c18','s3',
+            'c28','c17','c16','c29','d2','c26','c27','d1','c24','c25','d0','c0','c1',
+            's4','s5','s6','s7',
+            'c34','c15','c14','c35','d5','c32','c33','d4','c30','c31','d3','c2','c3','s8',
+            's9','s10','s11','c40',
+            'c13','c12','c41','d8','c38','c39','d7','c36','c37','d6','c4','c5','s12',
+            'c6','c7','s13','c8','c9','s14','c10','c11','s15'     
+               ]
+        order.reverse()
+
+        cfg_data=[]
+        switch_pattern="[Ss](?P<sbox_no>\d{1,2})"
+        conn_box_pattern = "[Cc](?P<cbox_no>\d{1,2})"
+        clb_pattern="[Dd](?P<clb_no>\d)"
+        for block in order:
+            switch_res=re.search(switch_pattern,block)
+            if switch_res:
+                for i in range(4):
+                    cfg_data.append((sbox_data[f"s{switch_res.group('sbox_no')}{3-i}"]+'00')[::-1])
+                    
+            conn_box_res=re.search(conn_box_pattern,block)
+            if conn_box_res:
+                cfg_data.append((conn_box_config[f"c{conn_box_res.group('cbox_no')}"])[::-1])
             
-            self.conn_box_cfg[rom_no] = (
-                self.conn_box_cfg[rom_no] + conn_box_config["c" + str(i)]
-            )
-
-        # write the connection box bitstream to the ROM
-        for i in range(math.ceil(self.conn_box_count/16)):
-            self.conn_box_cfg[i] = "{:012x}".format(int(self.conn_box_cfg[i][::-1], 2))
-            final_code_str = "v2.0 raw\n" + self.conn_box_cfg[i]
-            # file= open("D:\Documents\digital projects\FPGA slice\conn_box_cfg_"+str(i+1)+".hex","w+")
-            file = open(
-                os.path.join(
-                    self.conn_box_cfg_data_folder_path,
-                    "conn_box_data_cfg_" + str(i) + ".hex",
-                ),
-                "w+",
-            )
-            link_ROM(
-                self.dir,
-                "conn-cfg" + str(i),
-                os.path.join(
-                    self.conn_box_cfg_data_folder_path,
-                    "conn_box_data_cfg_" + str(i) + ".hex",
-                ),
-            )
-            file.write(final_code_str)
-            file.close()
-
-    def clb(self, clb_list:list[bsf.Clb])->None:
-        """
-        Write the CLB bitstream into respective ROM's
-
-        Args:
-            clb_list (list[bsf.Clb]): All the instantiated Clb objects
-        """
-        for i in range(9):
-            self.clb_data_cfg[i] = "{0:09x}".format(int(clb_list[i].data, 2))
-            final_code_str = "v2.0 raw\n" + self.clb_data_cfg[i]
-            file = open(
-                os.path.join(
-                    self.clb_cfg_data_folder_path, "clb_data_cfg_" + str(i) + ".hex"
-                ),
-                "w+",
-            )
-            link_ROM(
-                self.dir,
-                "slice-cfg" + str(i),
-                os.path.join(
-                    self.clb_cfg_data_folder_path, "clb_data_cfg_" + str(i) + ".hex"
-                ),
-            )
-            file.write(final_code_str)
-            file.close()
+            clb_res=re.search(clb_pattern,block)
+            if clb_res:
+                cfg_data.append('000'+(clb_list[int(clb_res.group('clb_no'))].data))
+                   
+        bitstream=''.join(cfg_data) 
+        bitstream=list(bitstream)
+        bitstream_file=r"Oktane_simulator_files\config_data\bitstream.hex"
+        with open(bitstream_file,'w') as file:
+            file.write("v2.0 raw\n0")
+            for i in bitstream:
+                file.write('\n'+i)
+        
+        link_ROM(self.dir,"bitstream", os.path.join(self.dir,bitstream_file))
 
 def status_field_write(ide,msg):
     ide.w.txt.csr.insertText(f"{msg}\n")

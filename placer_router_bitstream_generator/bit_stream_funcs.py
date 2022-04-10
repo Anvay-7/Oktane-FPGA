@@ -145,7 +145,8 @@ class Clb():
         #Set the enable for all the input ports being used
         #y
         for var in self.exprs[y_no]['vars'].keys():
-            self.bitstream[var+'_used']='1'
+            if var != "not":
+                self.bitstream[var+'_used']='1'
 
 
         #Set the clock number if custom clock variable is used
@@ -181,7 +182,7 @@ class Clb():
         self.bitstream['data'+result.group('y_no')]=self.truth_table(self.exprs[y_no]['expr'],self.exprs[y_no]['var_count'],self.exprs[y_no]['vars'])[::-1]
         
         clb_data_vals=list(self.bitstream.values()) #concatenate the bits
-        
+        print(len(''.join(clb_data_vals)))
         #insert each data field in reverse order (Note: The bits are not reversed inside the data field)
         self.data=''
         for i in range(len(clb_data_vals)-1,-1,-1):

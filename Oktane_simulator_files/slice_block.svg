@@ -20,13 +20,13 @@
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      inkscape:pagecheckerboard="0"
-     inkscape:zoom="1.2403831"
-     inkscape:cx="-118.10867"
-     inkscape:cy="31.038798"
+     inkscape:zoom="1.7541666"
+     inkscape:cx="-90.356298"
+     inkscape:cy="233.44419"
      inkscape:window-width="1920"
      inkscape:window-height="1027"
      inkscape:window-x="-8"
-     inkscape:window-y="-8"
+     inkscape:window-y="712"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg104">
     <inkscape:grid
@@ -315,7 +315,7 @@
      transform="translate(-20,-240)">
     <circle
        fill="#0000b2"
-       id="pin:cfg"
+       id="pin:Si"
        cx="0"
        cy="320"
        r="3" />
@@ -324,7 +324,7 @@
        font-size="18px"
        x="4"
        y="326"
-       id="text90">cfg</text>
+       id="text90">Si</text>
   </g>
   <g
      id="g97"
@@ -359,5 +359,42 @@
        x="56"
        y="26"
        id="text100">Y2</text>
+  </g>
+  <g
+     id="g107"
+     transform="translate(-40,120)">
+    <circle
+       fill="#b20000"
+       id="pin:So"
+       cx="60"
+       cy="20"
+       r="3" />
+  </g>
+  <g
+     id="g112"
+     transform="translate(-80,-20)">
+    <circle
+       fill="#b20000"
+       id="pin:f_clk"
+       cx="60"
+       cy="20"
+       r="3" />
+  </g>
+  <text
+     fill="#808080"
+     font-size="18px"
+     text-anchor="end"
+     x="0.22328186"
+     y="18.028503"
+     id="text68">f_clk</text>
+  <g
+     id="g117"
+     transform="translate(20,240)">
+    <circle
+       fill="#b20000"
+       id="pin:data"
+       cx="60"
+       cy="20"
+       r="3" />
   </g>
 </svg>

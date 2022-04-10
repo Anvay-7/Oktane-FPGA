@@ -6,6 +6,7 @@ import bit_stream_funcs as bsf
 import config as cfg
 import colorama
 from termcolor import colored
+import os
 from gui import exec_prgs
 
 def main(exec_progress:exec_prgs,AHDL7_file_dir:str)->None:
@@ -31,16 +32,15 @@ def main(exec_progress:exec_prgs,AHDL7_file_dir:str)->None:
     for clb_no in range(cfg.CLB_CNT):
         clbs.append(bsf.Clb(clb_no))
         clbs_data.append(clbs[clb_no].data)
-    
+  
     code_lines = cdr.AHDL7_read(AHDL7_file_dir)
 
     mode = cdr.get_mode(code_lines[0])  # Automatic or manual
 
     code_lines.pop(0)  # Remove the mode assignment
 
-    # Instantiate all the ROM's
-    rom = cdr.WriteMem(r"D:\Oktane\Oktane_simulator_files")
-    rom.make_dir()
+    rom = cdr.WriteMem(os.path.join(os.getcwd(),"Oktane_simulator_files"))
+     
 
     routing_nw = gnw.route_nw_gen()
     clb_nw = pl.clb_nw_gen()
@@ -62,7 +62,8 @@ def main(exec_progress:exec_prgs,AHDL7_file_dir:str)->None:
     
     if mode == 1:
         final_codelines, paths, conv_exprs = pl.placer(routing_nw, clb_nw, code_lines)
-        print(colored(final_codelines,'cyan'))        
+        print(colored(final_codelines,'cyan'))
+     
         codes = gnw.detailed_code_gen(paths, clbs)
 
         bsf.bit_stream_config_gen(codes, conv_exprs, mode, clbs, cbox_data, sbox_data)
@@ -80,10 +81,7 @@ def main(exec_progress:exec_prgs,AHDL7_file_dir:str)->None:
         cdr.status_field_write(exec_progress,"Bitstream generated")
         cdr.update_prog_bar(exec_progress,4)
         
-    rom.switch_box(sbox_data)
-    rom.conn_box(cbox_data)
-    rom.clb(clbs)
-    
+    rom.serial_bitstream(sbox_data,cbox_data,clbs)
     cdr.status_field_write(exec_progress,"Bitstream written to ROM")
     cdr.update_prog_bar(exec_progress,5)
     

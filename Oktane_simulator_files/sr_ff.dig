@@ -93,7 +93,7 @@
           <string>clk</string>
         </entry>
       </elementAttributes>
-      <pos x="760" y="520"/>
+      <pos x="740" y="480"/>
     </visualElement>
     <visualElement>
       <elementName>Text</elementName>
@@ -105,6 +105,44 @@
       </elementAttributes>
       <pos x="260" y="160"/>
     </visualElement>
+    <visualElement>
+      <elementName>Tunnel</elementName>
+      <elementAttributes>
+        <entry>
+          <string>NetName</string>
+          <string>sclk</string>
+        </entry>
+      </elementAttributes>
+      <pos x="460" y="520"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Clock</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Frequency</string>
+          <int>5000</int>
+        </entry>
+        <entry>
+          <string>runRealTime</string>
+          <boolean>true</boolean>
+        </entry>
+      </elementAttributes>
+      <pos x="440" y="520"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Tunnel</elementName>
+      <elementAttributes>
+        <entry>
+          <string>rotation</string>
+          <rotation rotation="2"/>
+        </entry>
+        <entry>
+          <string>NetName</string>
+          <string>sclk</string>
+        </entry>
+      </elementAttributes>
+      <pos x="780" y="520"/>
+    </visualElement>
   </visualElements>
   <wires>
     <wire>
@@ -114,6 +152,10 @@
     <wire>
       <p1 x="900" y="600"/>
       <p2 x="960" y="600"/>
+    </wire>
+    <wire>
+      <p1 x="440" y="520"/>
+      <p2 x="460" y="520"/>
     </wire>
     <wire>
       <p1 x="440" y="460"/>
@@ -130,10 +172,6 @@
     <wire>
       <p1 x="660" y="320"/>
       <p2 x="660" y="360"/>
-    </wire>
-    <wire>
-      <p1 x="760" y="500"/>
-      <p2 x="760" y="520"/>
     </wire>
   </wires>
   <measurementOrdering/>
