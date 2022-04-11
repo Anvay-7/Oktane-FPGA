@@ -17,61 +17,61 @@ class Ide(QMainWindow):
         self.initUI()
 
     def initToolbar(self):
-        self.newAction = QAction(QIcon(r"D:\Oktane\placer_router_bitstream_generator\icons\new.png"),"New",self)
+        self.newAction = QAction(QIcon(r"placer_router_bitstream_generator\icons\new.png"),"New",self)
         self.newAction.setShortcut("Ctrl+N")
         self.newAction.setStatusTip("Create a new document from scratch.")
         self.newAction.triggered.connect(self.new)
 
-        self.openAction = QAction(QIcon(r"D:\Oktane\placer_router_bitstream_generator\icons\open.png"),"Open file",self)
+        self.openAction = QAction(QIcon(r"placer_router_bitstream_generator\icons\open.png"),"Open file",self)
         self.openAction.setStatusTip("Open existing document")
         self.openAction.setShortcut("Ctrl+O")
         self.openAction.triggered.connect(self.open)
 
-        self.saveAction = QAction(QIcon(r"D:\Oktane\placer_router_bitstream_generator\icons\save.png"),"Save",self)
+        self.saveAction = QAction(QIcon(r"placer_router_bitstream_generator\icons\save.png"),"Save",self)
         self.saveAction.setStatusTip("Save document")
         self.saveAction.setShortcut("Ctrl+S")
         self.saveAction.triggered.connect(self.save)
 
-        self.saveAsAction = QAction(QIcon(r"D:\Oktane\placer_router_bitstream_generator\icons\save_as.png"),"SaveAs",self)
+        self.saveAsAction = QAction(QIcon(r"placer_router_bitstream_generator\icons\save_as.png"),"SaveAs",self)
         self.saveAsAction.setStatusTip("Save As")
         self.saveAsAction.triggered.connect(self.save_as)
 
-        self.cutAction = QAction(QIcon(r"D:\Oktane\placer_router_bitstream_generator\icons\cut.png"),"Cut to clipboard",self)
+        self.cutAction = QAction(QIcon(r"placer_router_bitstream_generator\icons\cut.png"),"Cut to clipboard",self)
         self.cutAction.setStatusTip("Delete and copy text to clipboard")
         self.cutAction.setShortcut("Ctrl+X")
         self.cutAction.triggered.connect(self.text.cut)
 
-        self.copyAction = QAction(QIcon(r"D:\Oktane\placer_router_bitstream_generator\icons\copy.png"),"Copy to clipboard",self)
+        self.copyAction = QAction(QIcon(r"placer_router_bitstream_generator\icons\copy.png"),"Copy to clipboard",self)
         self.copyAction.setStatusTip("Copy text to clipboard")
         self.copyAction.setShortcut("Ctrl+C")
         self.copyAction.triggered.connect(self.text.copy)
 
-        self.pasteAction = QAction(QIcon(r"D:\Oktane\placer_router_bitstream_generator\icons\paste.png"),"Paste from clipboard",self)
+        self.pasteAction = QAction(QIcon(r"placer_router_bitstream_generator\icons\paste.png"),"Paste from clipboard",self)
         self.pasteAction.setStatusTip("Paste text from clipboard")
         self.pasteAction.setShortcut("Ctrl+V")
         self.pasteAction.triggered.connect(self.text.paste)
 
-        self.undoAction = QAction(QIcon(r"D:\Oktane\placer_router_bitstream_generator\icons\undo.png"),"Undo last action",self)
+        self.undoAction = QAction(QIcon(r"placer_router_bitstream_generator\icons\undo.png"),"Undo last action",self)
         self.undoAction.setStatusTip("Undo last action")
         self.undoAction.setShortcut("Ctrl+Z")
         self.undoAction.triggered.connect(self.text.undo)
 
-        self.redoAction = QAction(QIcon(r"D:\Oktane\placer_router_bitstream_generator\icons\redo.png"),"Redo last undone thing",self)
+        self.redoAction = QAction(QIcon(r"placer_router_bitstream_generator\icons\redo.png"),"Redo last undone thing",self)
         self.redoAction.setStatusTip("Redo last undone thing")
         self.redoAction.setShortcut("Ctrl+Y")
         self.redoAction.triggered.connect(self.text.redo)
 
-        self.incSize = QAction(QIcon(r"D:\Oktane\placer_router_bitstream_generator\icons\inc_font.png"),"Increase font size",self)
+        self.incSize = QAction(QIcon(r"placer_router_bitstream_generator\icons\inc_font.png"),"Increase font size",self)
         self.incSize.setStatusTip("Increase font size")
         self.incSize.setShortcut("Ctrl+I")
         self.incSize.triggered.connect(self.inc_size)
 
-        self.decSize = QAction(QIcon(r"D:\Oktane\placer_router_bitstream_generator\icons\dec_font.png"),"Decrease font size",self)
+        self.decSize = QAction(QIcon(r"placer_router_bitstream_generator\icons\dec_font.png"),"Decrease font size",self)
         self.decSize.setStatusTip("Decrease font size")
         self.decSize.setShortcut("Ctrl+D")
         self.decSize.triggered.connect(self.dec_size)
 
-        self.runAction = QAction(QIcon(r"D:\Oktane\placer_router_bitstream_generator\icons\run.png"),"Run the code",self)
+        self.runAction = QAction(QIcon(r"placer_router_bitstream_generator\icons\run.png"),"Run the code",self)
         self.runAction.setStatusTip("Run the code")
         self.runAction.setShortcut("Ctrl+R")
         self.runAction.triggered.connect(self.run)
@@ -107,7 +107,7 @@ class Ide(QMainWindow):
     def about(self):
         abt = QMessageBox(self)
         abt.setTextFormat(Qt.RichText)
-        abt.setIconPixmap(QPixmap(r"D:\Oktane\placer_router_bitstream_generator\icons\dp.png"))
+        abt.setIconPixmap(QPixmap(r"placer_router_bitstream_generator\icons\dp.png"))
         abt.setWindowTitle("About")
         abt.setText("<br>Made by Anvay!<br>"+"<a href= 'https://github.com/Anvay-7'><center>Github</center><br/></a>")
         abt.setFont(self.font)
@@ -213,7 +213,7 @@ class Ide(QMainWindow):
         self.setWindowTitle("Oktane AHDL IDE")
 
 
-        self.setWindowIcon(QIcon(r"D:\Oktane\placer_router_bitstream_generator\icons\code.png"))
+        self.setWindowIcon(QIcon(r"placer_router_bitstream_generator\icons\code.png"))
 
     def new(self):
         spawn = Ide(self)

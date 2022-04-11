@@ -145,7 +145,7 @@ class Clb():
         #Set the enable for all the input ports being used
         #y
         for var in self.exprs[y_no]['vars'].keys():
-            if var != "not":
+            if var != "not": 
                 self.bitstream[var+'_used']='1'
 
 

@@ -82,6 +82,7 @@ def main(exec_progress:exec_prgs,AHDL7_file_dir:str)->None:
         cdr.update_prog_bar(exec_progress,4)
         
     rom.serial_bitstream(sbox_data,cbox_data,clbs)
+    
     cdr.status_field_write(exec_progress,"Bitstream written to ROM")
     cdr.update_prog_bar(exec_progress,5)
     

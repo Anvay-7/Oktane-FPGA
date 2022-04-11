@@ -95,16 +95,7 @@ class WriteMem:
         self.sw_box_count = ((cfg.ROWS_CNT+1)*(cfg.COLS_CNT+1))//2 #Divide by 2 as two groups of sw_box's in one ROM
         
         self.conn_box_count=(cfg.ROWS_CNT+cfg.COLS_CNT)*cfg.IO_GRP_SIZE*2+(cfg.CLB_CNT*2)
-    
-
-    # def make_dir(self)->None:
-    #     """
-    #     Creates the folders(if not created already) required to store the data.
-    #     """        
-    #     # Create all the necessary folders
-    #     if not os.path.isdir(os.path.join(self.dir, "config_data")):
-    #         os.mkdir(os.path.join(self.dir, "config_data"))
-            
+                
     def serial_bitstream(self,sbox_data,conn_box_config,clb_list):
         order=[
             's0','c23','c22','s1','c21','c20','s2','c19','c18','s3',
