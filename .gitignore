@@ -2,3 +2,4 @@ placer_router_bitstream_generator/__pycache__/
 .vscode/
 FPGA_graph.gexf
 vivado_files/Oktane/
+oktane_vivado/

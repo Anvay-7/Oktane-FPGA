@@ -1,8 +1,19 @@
 module switch_box (
-	inout       l, u, r, d,
-	input [5:0] dir,
-	input [5:0] en
+	inout  l, u, r, d,
+	input  clk,
+	input  si ,
+	output so
 );
+
+	wire [11:0] po;
+
+	shift_reg #(.len(12)) sr0 (.sin(si), .clk(clk), .Q(po));
+	assign so = po[11];
+
+	wire [5:0] en ;
+	wire [5:0] dir;
+	assign en  = po[5:0];
+	assign dir = po[11:6];
 
 	bidir_buf bdf1 (.left(l), .right(u), .dir(dir[0]), .en(en[0]));
 	bidir_buf bdf2 (.left(u), .right(r), .dir(dir[1]), .en(en[1]));

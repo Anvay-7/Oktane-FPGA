@@ -1,10 +1,18 @@
 module clb (
-	input  [32:0] cfg  ,
-	input  [ 3:0] a, b, c,
-	input  [ 2:0] clk  ,
-	input         f_clk,
-	output        y1, y2
+	input        si     ,
+	input        sys_clk,
+	input  [3:0] a, b, c,
+	input  [2:0] clk    ,
+	input        f_clk  ,
+	output       so     ,
+	output       y1, y2
 );
+
+	wire [32:0] cfg;
+
+	shift_reg #(.len(33)) sr0 (.sin(si), .clk(sys_clk), .Q(cfg));
+	assign so = cfg[32];
+
 	wire clk_mux_y;
 	mux4 clk_sel (.sel(cfg[1:0]), .data({f_clk,clk}), .y(clk_mux_y)); 
 
