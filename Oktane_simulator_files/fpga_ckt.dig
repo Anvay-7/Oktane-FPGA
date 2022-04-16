@@ -4661,7 +4661,7 @@
       <elementAttributes>
         <entry>
           <string>AddrBits</string>
-          <int>10</int>
+          <int>11</int>
         </entry>
         <entry>
           <string>Label</string>
@@ -4687,7 +4687,7 @@
       <elementAttributes>
         <entry>
           <string>Bits</string>
-          <int>10</int>
+          <int>11</int>
         </entry>
         <entry>
           <string>isProgramCounter</string>
@@ -4720,7 +4720,7 @@
       <elementAttributes>
         <entry>
           <string>Bits</string>
-          <int>10</int>
+          <int>11</int>
         </entry>
       </elementAttributes>
       <pos x="-3580" y="-2800" />
@@ -4730,11 +4730,11 @@
       <elementAttributes>
         <entry>
           <string>Value</string>
-          <long>1005</long>
+          <long>1429</long>
         </entry>
         <entry>
           <string>Bits</string>
-          <int>10</int>
+          <int>11</int>
         </entry>
         <entry>
           <string>intFormat</string>

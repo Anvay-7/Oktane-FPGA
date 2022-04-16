@@ -206,43 +206,62 @@ def switch_box_bitstream(result:re.Match,switch_box_config:dict)->tuple[str,str]
     
     #s3
     if result.group('row1')+result.group('col1')==result.group('row2')+result.group('col2'):
-        switch_code=bin(switch_code | 8).replace('0b','').zfill(6)
+        if result.group('pos1').lower()=="h":
+            switch_code=bin(switch_code | 8).replace('0b','').zfill(6)+bin(0).replace('0b','').zfill(6)
+        else:
+            switch_code=bin(switch_code | 8).replace('0b','').zfill(6)+bin(8).replace('0b','').zfill(6)
         switch_no='s'+str(int(result.group('row1'))*4 + int(result.group('col1')))+result.group('layer1') #H_value
 
     #s1
     elif abs(int(result.group('row1'))-int(result.group('row2')))==abs(int(result.group('col1'))-int(result.group('col2'))):
-        switch_code=bin(switch_code| 32).replace('0b','').zfill(6)
+        if result.group('pos1').lower()=="h":
+            switch_code=bin(switch_code | 32).replace('0b','').zfill(6)+bin(0).replace('0b','').zfill(6)
+        else:
+            switch_code=bin(switch_code | 32).replace('0b','').zfill(6)+bin(32).replace('0b','').zfill(6)
         switch_no='s'+str(max(int(result.group('row1')),int(result.group('row2')))*4 + min(int(result.group('col1')),int(result.group('col2')))+ 1)+result.group('layer1') #H_value+1
     
     elif result.group('col1')==result.group('col2'):
         if result.group('pos1').lower()==result.group('pos2').lower():
             #s6
             if abs(int(result.group('row1')+result.group('col1'))-int(result.group('row2')+result.group('col2')))==10 and result.group('pos1').lower()=='v':
-                switch_code=bin(switch_code | 1).replace('0b','').zfill(6)
+                if (result.group('row1')<result.group('row2')):
+                    switch_code=bin(switch_code | 1).replace('0b','').zfill(6)+bin(0).replace('0b','').zfill(6)
+                else:
+                    switch_code=bin(switch_code | 1).replace('0b','').zfill(6)+bin(1).replace('0b','').zfill(6)
                 switch_no='s'+str(max(int(result.group('row1')),int(result.group('row2')))*4 + int(result.group('col1')))+result.group('layer1') #max(V_value1,V_value2)
+                     
             else:
                 print('Value wrong for V<-->V')
         else:
             #s2
-            switch_code=bin(switch_code | 16).replace('0b','').zfill(6)
+            if result.group('pos1').lower()=="v":
+                switch_code=bin(switch_code | 16).replace('0b','').zfill(6)+bin(0).replace('0b','').zfill(6)
+            else:
+                switch_code=bin(switch_code | 16).replace('0b','').zfill(6)+bin(16).replace('0b','').zfill(6)
             switch_no='s'+str(max(int(result.group('row1')),int(result.group('row2')))*4 + int(result.group('col1')))+result.group('layer1') #H_value
     
     elif result.group('row1')==result.group('row2'):
         if result.group('pos1').lower()==result.group('pos2').lower():
             #s5
             if abs(int(result.group('row1')+result.group('col1'))-int(result.group('row2')+result.group('col2')))==1 and result.group('pos1').lower()=='h':
-                switch_code=bin(switch_code | 2).replace('0b','').zfill(6)
+                if (result.group('col1')<result.group('col2')):
+                    switch_code=bin(switch_code | 2).replace('0b','').zfill(6)+bin(0).replace('0b','').zfill(6)
+                else:
+                    switch_code=bin(switch_code | 2).replace('0b','').zfill(6)+bin(2).replace('0b','').zfill(6)
                 switch_no='s'+str(int(result.group('row1'))*4 + max(int(result.group('col1')),int(result.group('col2'))))+result.group('layer1') #max(H_value1,H_value2)
             else:
                 print('Value wrong for H<-->H')
         else:
             #s4
-            switch_code=bin(switch_code | 4).replace('0b','').zfill(6)
+            if result.group('pos1').lower()=="v":
+                switch_code=bin(switch_code | 4).replace('0b','').zfill(6)+bin(0).replace('0b','').zfill(6)
+            else:
+                switch_code=bin(switch_code | 4).replace('0b','').zfill(6)+bin(4).replace('0b','').zfill(6)
             switch_no='s'+str(int(result.group('row1'))*4 + max(int(result.group('col1')),int(result.group('col2'))))+result.group('layer1') #V_value
     else:
         print('switch code is wrong :(')
     
-    switch_box_config[switch_no]=bin(int(switch_box_config[switch_no],2)|int(switch_code,2)).replace('0b','').zfill(6) #updating the switch_code
+    switch_box_config[switch_no]=bin(int(switch_box_config[switch_no],2)|int(switch_code,2)).replace('0b','').zfill(12) #updating the switch_code
 
     return switch_code,switch_no
 
@@ -266,11 +285,17 @@ def io_conn_box_bitstream(result:re.Match,conn_box_config:dict):
         layer_no=result.group('layer_r_no')
 
     if int(pin_no)<=cfg.IO_GRP_SIZE*(cfg.ROWS_CNT+cfg.COLS_CNT)-1:
-        conn_code=bin(int(conn_box_config['c'+pin_no],2)|pow(2,(int(layer_no)))).replace('0b','').zfill(4)
+        if result.group('pin_r_no'):
+            conn_code=bin(pow(2,(int(layer_no)))).replace('0b','').zfill(4)+bin(0).replace('0b','').zfill(4)
+        else:
+            conn_code=bin(pow(2,(int(layer_no)))).replace('0b','').zfill(4)+bin(pow(2,(int(layer_no)))).replace('0b','').zfill(4)
     else:
-        conn_code=bin(int(conn_box_config['c'+pin_no],2)|pow(2,(3-int(layer_no)))).replace('0b','').zfill(4)
+        if result.group('pin_r_no'):
+            conn_code=bin(pow(2,(3-int(layer_no)))).replace('0b','').zfill(4)+bin(0).replace('0b','').zfill(4)
+        else:
+            conn_code=bin(pow(2,(3-int(layer_no)))).replace('0b','').zfill(4)+bin(pow(2,(3-int(layer_no)))).replace('0b','').zfill(4)
 
-    conn_box_config['c'+pin_no]=bin(int(conn_box_config['c'+pin_no],2)|int(conn_code,2)).replace('0b','').zfill(4)
+    conn_box_config['c'+pin_no]=bin(int(conn_box_config['c'+pin_no],2)|int(conn_code,2)).replace('0b','').zfill(8)
 
 def clb_conn_box_bitstream(result:re.Match,conn_box_config:dict):
     """
@@ -280,9 +305,9 @@ def clb_conn_box_bitstream(result:re.Match,conn_box_config:dict):
         result (re.Match): Match object for clb_conn_box_pattern
         conn_box_config (dict): Bitstream for connection boxes. eg {'c0':'0100'}
     """
-    conn_code=bin(int(conn_box_config['c'+str(23+int(result.group('clb_number'))*2+int(result.group('output_no')))])|pow(2,(int(result.group('layer_no'))))).replace('0b','').zfill(4)
+    conn_code=bin(pow(2,(int(result.group('layer_no'))))).replace('0b','').zfill(4)+bin(pow(2,(int(result.group('layer_no'))))).replace('0b','').zfill(4)
 
-    conn_box_config['c'+str(23+int(result.group('clb_number'))*2+int(result.group('output_no')))]=bin(int(conn_box_config['c'+str(23+int(result.group('clb_number'))*2+int(result.group('output_no')))],2)|int(conn_code,2)).replace('0b','').zfill(4)
+    conn_box_config['c'+str(23+int(result.group('clb_number'))*2+int(result.group('output_no')))]=bin(int(conn_box_config['c'+str(23+int(result.group('clb_number'))*2+int(result.group('output_no')))],2)|int(conn_code,2)).replace('0b','').zfill(8)
 
 def bit_stream_config_gen(codes:list,exprs:list,mode:int,clb_list:list[Clb],cbox_data:dict,sbox_data:dict):
     """

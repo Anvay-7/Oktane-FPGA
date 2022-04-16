@@ -49,12 +49,12 @@ def main(exec_progress:exec_prgs,AHDL7_file_dir:str)->None:
     sbox_data = {}
     for i in range(rom.sw_box_count*2): #Two groups of sw_box(8 sw_boxes totally) data in one ROM
         for j in range(cfg.ROUTE_CHNL_SIZE):
-            sbox_data[f"s{i}{j}"] = "000000"
+            sbox_data[f"s{i}{j}"] = "000000000000"
 
     # default bitstream for connection boxes
     cbox_data = {}
     for i in range(rom.conn_box_count):
-        cbox_data[f"c{i}"] = "0000"
+        cbox_data[f"c{i}"] = "00000000"
     
     cdr.status_field_write(exec_progress,"Initialisation done")
     cdr.update_prog_bar(exec_progress,2)

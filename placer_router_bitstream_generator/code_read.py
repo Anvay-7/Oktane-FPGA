@@ -112,12 +112,13 @@ class WriteMem:
         switch_pattern="[Ss](?P<sbox_no>\d{1,2})"
         conn_box_pattern = "[Cc](?P<cbox_no>\d{1,2})"
         clb_pattern="[Dd](?P<clb_no>\d)"
+        print(sbox_data)
         for block in order:
             switch_res=re.search(switch_pattern,block)
             if switch_res:
                 for i in range(4):
-                    cfg_data.append((sbox_data[f"s{switch_res.group('sbox_no')}{3-i}"]+'00')[::-1])
-                    
+                    cfg_data.append((sbox_data[f"s{switch_res.group('sbox_no')}{3-i}"])[::-1])
+            
             conn_box_res=re.search(conn_box_pattern,block)
             if conn_box_res:
                 cfg_data.append((conn_box_config[f"c{conn_box_res.group('cbox_no')}"])[::-1])
