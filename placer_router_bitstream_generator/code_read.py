@@ -112,7 +112,6 @@ class WriteMem:
         switch_pattern="[Ss](?P<sbox_no>\d{1,2})"
         conn_box_pattern = "[Cc](?P<cbox_no>\d{1,2})"
         clb_pattern="[Dd](?P<clb_no>\d)"
-        print(sbox_data)
         for block in order:
             switch_res=re.search(switch_pattern,block)
             if switch_res:
@@ -125,7 +124,8 @@ class WriteMem:
             
             clb_res=re.search(clb_pattern,block)
             if clb_res:
-                cfg_data.append('000'+(clb_list[int(clb_res.group('clb_no'))].data))
+                #cfg_data.append('000'+(clb_list[int(clb_res.group('clb_no'))].data))
+                cfg_data.append((clb_list[int(clb_res.group('clb_no'))].data))
                    
         bitstream=''.join(cfg_data) 
         bitstream=list(bitstream)

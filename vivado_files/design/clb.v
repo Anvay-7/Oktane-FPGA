@@ -4,8 +4,8 @@ module clb (
 	input  [3:0] a, b, c,
 	input  [2:0] clk    ,
 	input        f_clk  ,
-	output       so     ,
-	output       y1, y2
+	output       y1, y2 ,
+	output       so
 );
 
 	wire [32:0] cfg;
@@ -35,13 +35,13 @@ module clb (
 	assign y1_edge = cfg[12]?!clk_mux_y:clk_mux_y;
 	assign y2_edge = cfg[13]?!clk_mux_y:clk_mux_y;
 
-	reg y1_ff;
+	reg y1_ff=0;
 	always@(posedge y1_edge)
 		begin
 			y1_ff <= lut1_y;
 		end
 
-	reg y2_ff;
+	reg y2_ff=0;
 	always@(posedge y2_edge)
 		begin
 			y2_ff <= lut2_y;

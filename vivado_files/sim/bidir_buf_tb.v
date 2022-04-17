@@ -13,7 +13,7 @@ module bidir_buf_tb ();
 
 	initial
 		begin
-			l = 0;
+			l = 1'bz;
 			r = 1'bz;
 			dir = 0;
 			en = 1;
