@@ -129,13 +129,18 @@ class WriteMem:
                    
         bitstream=''.join(cfg_data) 
         bitstream=list(bitstream)
-        bitstream_file=r"Oktane_simulator_files\config_data\bitstream.hex"
-        with open(bitstream_file,'w') as file:
+        bitstream_file_simulator=r"Oktane_simulator_files\config_data\bitstream.hex"
+        bitstream_file_vivado=r"vivado_files\bitstream.txt"
+        with open(bitstream_file_simulator,'w') as file:
             file.write("v2.0 raw\n0")
             for i in bitstream:
                 file.write('\n'+i)
         
-        link_ROM(self.dir,"bitstream", os.path.join(self.dir,bitstream_file))
+        with open(bitstream_file_vivado,'w') as file:
+            for i in bitstream:
+                file.write('\n'+i)
+        
+        link_ROM(self.dir,"bitstream", os.path.join(self.dir,bitstream_file_simulator))
 
 def status_field_write(ide,msg):
     ide.w.txt.csr.insertText(f"{msg}\n")
