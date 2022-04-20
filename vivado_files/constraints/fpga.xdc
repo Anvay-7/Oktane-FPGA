@@ -1,7 +1,7 @@
 create_clock -period 1000000.000 -name sys_clk -waveform {0.000 500000.000} [get_ports s_clk]
-set_input_delay -clock [get_clocks *] 5.000 [get_ports {flag sin}]
-set_output_delay -clock [get_clocks *] 5.000 [get_ports -filter { NAME =~  "*" && DIRECTION == "OUT" }]
-
+# set_input_delay -clock [get_clocks *] 5.000 [get_ports {flag sin}]
+# set_output_delay -clock [get_clocks *] 5.000 [get_ports -filter { NAME =~  "*" && DIRECTION == "OUT" }]
+set_property ALLOW_COMBINATORIAL_LOOPS TRUE [get_nets h320]
 
 
 set_property PACKAGE_PIN W19 [get_ports f_clk]
