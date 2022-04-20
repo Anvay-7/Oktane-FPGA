@@ -230,7 +230,7 @@ if {[string equal [get_filesets -quiet constrs_2] ""]} {
 set obj [get_filesets constrs_2]
 
 # Add/Import constrs file and set constrs file properties
-set file "[file normalize "$origin_dir/Oktane/Oktane.srcs/constrs_2/new/fpga.xdc"]"
+set file "[file normalize "constraints/fpga.xdc"]"
 set file_imported [import_files -fileset constrs_2 [list $file]]
 set file "new/fpga.xdc"
 set file_obj [get_files -of_objects [get_filesets constrs_2] [list "*$file"]]

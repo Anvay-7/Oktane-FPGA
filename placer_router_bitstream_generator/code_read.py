@@ -133,12 +133,15 @@ class WriteMem:
         bitstream_file_vivado=r"vivado_files\bitstream.txt"
         with open(bitstream_file_simulator,'w') as file:
             file.write("v2.0 raw\n0")
-            for i in bitstream:
-                file.write('\n'+i)
+            for bit in bitstream:
+                file.write('\n'+bit)
         
         with open(bitstream_file_vivado,'w') as file:
-            for i in bitstream:
-                file.write('\n'+i)
+            for i,bit in enumerate(bitstream):
+                if i == len(bitstream)-1:
+                    file.write(bit)
+                else:
+                    file.write(bit+'\n')
         
         link_ROM(self.dir,"bitstream", os.path.join(self.dir,bitstream_file_simulator))
 
